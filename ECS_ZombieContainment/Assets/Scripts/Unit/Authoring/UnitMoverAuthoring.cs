@@ -1,4 +1,5 @@
 using Unity.Entities;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class UnitMoverAuthoring : MonoBehaviour
@@ -25,4 +26,5 @@ public struct UnitMover : IComponentData
 {
     public float movementSpeed;
     public float rotationSpeed;
+    public float3 targetPosition;
 }

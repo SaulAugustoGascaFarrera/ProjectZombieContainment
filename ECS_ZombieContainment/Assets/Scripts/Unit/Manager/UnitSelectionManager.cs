@@ -95,6 +95,8 @@ public class UnitSelectionManager : MonoBehaviour
             {
                 entityQuery = entityManager.CreateEntityQuery(typeof(PhysicsWorldSingleton));
 
+                
+
                 PhysicsWorldSingleton physicsWorldSingleton = entityQuery.GetSingleton<PhysicsWorldSingleton>();
 
                 CollisionWorld collisionWorld = physicsWorldSingleton.CollisionWorld;
@@ -142,6 +144,24 @@ public class UnitSelectionManager : MonoBehaviour
 
         if(Input.GetMouseButton(1))
         {
+            Vector3 mousePosition = MousePositionManager.Instance.GetMousePosition();
+
+            EntityManager entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+            EntityQuery entityQuery = new EntityQueryBuilder(Allocator.Temp).WithAll<UnitMover,Selected>().Build(entityManager);
+
+            NativeArray<Entity> entityArray = entityQuery.ToEntityArray(Allocator.Temp);
+            NativeArray<UnitMover> unitMoverArray = entityQuery.ToComponentDataArray<UnitMover>(Allocator.Temp);
+
+            for(int i=0;i< entityArray.Length; i++)
+            {
+                UnitMover unitMover = unitMoverArray[i];
+                unitMover.targetPosition = mousePosition;
+
+                unitMoverArray[i] = unitMover;
+                
+            }
+            
+            entityQuery.CopyFromComponentDataArray(unitMoverArray);
 
         }
     }

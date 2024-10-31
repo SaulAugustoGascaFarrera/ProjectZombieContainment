@@ -127,6 +127,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 100536259}
+  - component: {fileID: 100536260}
   m_Layer: 0
   m_Name: MousePosition
   m_TagString: Untagged
@@ -149,6 +150,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &100536260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100536258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b1051ced059dd8439607b34ee97198f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &304232940
 GameObject:
   m_ObjectHideFlags: 0
@@ -599,7 +612,7 @@ GameObject:
   - component: {fileID: 701328225}
   - component: {fileID: 701328224}
   - component: {fileID: 701328223}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -974,9 +987,9 @@ SceneRoots:
   - {fileID: 330585546}
   - {fileID: 410087041}
   - {fileID: 832575519}
+  - {fileID: 1764182101}
   - {fileID: 701724879}
   - {fileID: 100536259}
   - {fileID: 701328226}
   - {fileID: 304232944}
   - {fileID: 686315973}
-  - {fileID: 1764182101}
