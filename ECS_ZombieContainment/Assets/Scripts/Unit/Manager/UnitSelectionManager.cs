@@ -1,6 +1,7 @@
 using System;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Mathematics;
 using Unity.Physics;
 using Unity.Transforms;
 using UnityEngine;
@@ -50,11 +51,15 @@ public class UnitSelectionManager : MonoBehaviour
 
                 entityManager.SetComponentEnabled<Selected>(entityArray[i], false);
 
-                selected.OnSelected = false;
+                //selected.OnSelected = false;
                 selected.OnDeselected = true;
+
+       
 
                 entityManager.SetComponentData<Selected>(entityArray[i],selected);
             }
+
+           
 
             Rect selectionAreaRect = GetSelectionAreaRect();
             float selectionAreaSize = selectionAreaRect.width * selectionAreaRect.height;
@@ -68,13 +73,15 @@ public class UnitSelectionManager : MonoBehaviour
                 entityArray = entityQuery.ToEntityArray(Allocator.Temp);
 
                 NativeArray<LocalTransform> localTransformArray = entityQuery.ToComponentDataArray<LocalTransform>(Allocator.Temp);
-                selectedArray = entityQuery.ToComponentDataArray<Selected>(Allocator.Temp);
+                //selectedArray = entityQuery.ToComponentDataArray<Selected>(Allocator.Temp);
 
                 for (int i = 0; i < localTransformArray.Length; i++)
                 {
                     LocalTransform localTransform = localTransformArray[i];
 
-                    Selected selected = selectedArray[i];
+                    //Selected selected = selectedArray[i];
+
+                    Selected selected = entityManager.GetComponentData<Selected>(entityArray[i]);
 
                     Vector2 unitPosition = Camera.main.WorldToScreenPoint(localTransform.Position);
 
@@ -83,9 +90,9 @@ public class UnitSelectionManager : MonoBehaviour
                         entityManager.SetComponentEnabled<Selected>(entityArray[i], true);
 
                         selected.OnSelected = true;
-                        selected.OnDeselected = false;
+                        //selected.OnDeselected = false;
 
-                        entityManager.SetComponentData<Selected>(entityArray[i], selected);
+                        entityManager.SetComponentData(entityArray[i], selected);
                     }
 
 
@@ -126,7 +133,7 @@ public class UnitSelectionManager : MonoBehaviour
                         entityManager.SetComponentEnabled<Selected>(raycastHit.Entity, true);
 
                         selected.OnSelected = true;
-                        selected.OnDeselected = false;
+                        //selected.OnDeselected = false;
                         
                         entityManager.SetComponentData(raycastHit.Entity,selected);
 
@@ -152,10 +159,13 @@ public class UnitSelectionManager : MonoBehaviour
             NativeArray<Entity> entityArray = entityQuery.ToEntityArray(Allocator.Temp);
             NativeArray<UnitMover> unitMoverArray = entityQuery.ToComponentDataArray<UnitMover>(Allocator.Temp);
 
+
+            NativeArray<float3> mousePositionArray = GenerateMovePositionArray2(mousePosition, entityArray.Length);
+
             for(int i=0;i< entityArray.Length; i++)
             {
                 UnitMover unitMover = unitMoverArray[i];
-                unitMover.targetPosition = mousePosition;
+                unitMover.targetPosition = mousePositionArray[i];
 
                 unitMoverArray[i] = unitMover;
                 
@@ -179,6 +189,25 @@ public class UnitSelectionManager : MonoBehaviour
         return selectionRect;
     }
 
+
+    private NativeArray<float3> GenerateMovePositionArray2(float3 targetPosition,int positionCount)
+    {
+        NativeArray<float3> positionArray = new NativeArray<float3>(positionCount,Allocator.Temp);
+
+        for(int i=0;i<positionArray.Length;i++)
+        {
+
+            var angle = i * (2.0f * Mathf.PI / positionCount);
+
+            Debug.Log(angle);
+
+            float3 position = new float3(math.cos(angle),0.0f,math.sin(angle)) * 6.0f + targetPosition;
+
+            positionArray[i] = position;
+        }
+
+        return positionArray;
+    }
 
 
 }
