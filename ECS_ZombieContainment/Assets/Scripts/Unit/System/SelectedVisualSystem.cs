@@ -12,7 +12,8 @@ partial struct SelectedVisualSystem : ISystem
     {
         foreach(RefRO<Selected> selected in SystemAPI.Query<RefRO<Selected>>().WithPresent<Selected>())
         {
-            if(selected.ValueRO.OnDeselected)
+
+            if (selected.ValueRO.OnDeselected)
             {
 
                 RefRW<LocalTransform> localTransform = SystemAPI.GetComponentRW<LocalTransform>(selected.ValueRO.visualEntity);
@@ -20,12 +21,15 @@ partial struct SelectedVisualSystem : ISystem
 
             }
 
-            if(selected.ValueRO.OnSelected)
+            if (selected.ValueRO.OnSelected)
             {
                 RefRW<LocalTransform> localTransform = SystemAPI.GetComponentRW<LocalTransform>(selected.ValueRO.visualEntity);
                 localTransform.ValueRW.Scale = selected.ValueRO.showScale;
 
             }
+
+           
+
         }
     }
 }

@@ -21,7 +21,7 @@ partial struct UnitMoverSystem : ISystem
             UnitMoverJob unitMoverJob = new UnitMoverJob
             {
                 deltaTime = SystemAPI.Time.DeltaTime,
-                reachedTargetDistanceSqr = 2.0f
+                //reachedTargetDistanceSqr = 2.0f
             };
 
             unitMoverJob.ScheduleParallel();
@@ -42,12 +42,13 @@ public partial struct UnitMoverJob : IJobEntity
 {
     public float deltaTime;
 
-    public float reachedTargetDistanceSqr;
+    
 
     public void Execute(ref LocalTransform localTransform,in UnitMover unitMover,ref PhysicsVelocity physicsVelocity)
     {
         float3 moveDirection = unitMover.targetPosition - localTransform.Position;
 
+        float reachedTargetDistanceSqr = 2.0f;
 
         if (math.lengthsq(moveDirection) > reachedTargetDistanceSqr)
         {

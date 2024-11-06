@@ -117,7 +117,7 @@ public class UnitSelectionManager : MonoBehaviour
                     Filter = new CollisionFilter
                     {
                         BelongsTo = ~0u,
-                        CollidesWith = 1u << 7,
+                        CollidesWith = 1u << GameAssets.UNIT_LAYER,
                         GroupIndex = 0,
 
                     }
@@ -126,7 +126,7 @@ public class UnitSelectionManager : MonoBehaviour
 
                 if(collisionWorld.CastRay(raycastInput,out Unity.Physics.RaycastHit raycastHit))
                 {
-                    if(entityManager.HasComponent<Selected>(raycastHit.Entity))
+                    if(entityManager.HasComponent<UnitMover>(raycastHit.Entity) && entityManager.HasComponent<Selected>(raycastHit.Entity))
                     {
                         Selected selected = entityManager.GetComponentData<Selected>(raycastHit.Entity);
 
@@ -149,7 +149,7 @@ public class UnitSelectionManager : MonoBehaviour
 
         }
 
-        if(Input.GetMouseButton(1))
+        if(Input.GetMouseButtonDown(1))
         {
             Vector3 mousePosition = MousePositionManager.Instance.GetMousePosition();
 
@@ -166,6 +166,8 @@ public class UnitSelectionManager : MonoBehaviour
             {
                 UnitMover unitMover = unitMoverArray[i];
                 unitMover.targetPosition = mousePositionArray[i];
+
+                //unitMover.targetPosition = mousePosition;
 
                 unitMoverArray[i] = unitMover;
                 
@@ -194,14 +196,24 @@ public class UnitSelectionManager : MonoBehaviour
     {
         NativeArray<float3> positionArray = new NativeArray<float3>(positionCount,Allocator.Temp);
 
+        if (positionCount == 0)
+        {
+            return positionArray;
+        }
+
+        //if(positionCount == 1)
+        //{
+        //    return positionArray;
+        //}
+
         for(int i=0;i<positionArray.Length;i++)
         {
 
-            var angle = i * (2.0f * Mathf.PI / positionCount);
+            float angle = i * (2.0f * Mathf.PI / positionCount);
 
-            Debug.Log(angle);
+            //Debug.Log(angle);
 
-            float3 position = new float3(math.cos(angle),0.0f,math.sin(angle)) * 6.0f + targetPosition;
+            float3 position = new float3(math.cos(angle),0.0f,math.sin(angle)) * 5.0f + targetPosition;
 
             positionArray[i] = position;
         }
