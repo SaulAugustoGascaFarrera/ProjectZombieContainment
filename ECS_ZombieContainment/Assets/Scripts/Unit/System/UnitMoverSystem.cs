@@ -6,11 +6,7 @@ using Unity.Transforms;
 
 partial struct UnitMoverSystem : ISystem
 {
-    [BurstCompile]
-    public void OnCreate(ref SystemState state)
-    {
-        
-    }
+    
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
@@ -29,11 +25,7 @@ partial struct UnitMoverSystem : ISystem
 
     }
 
-    [BurstCompile]
-    public void OnDestroy(ref SystemState state)
-    {
-        
-    }
+    
 }
 
 

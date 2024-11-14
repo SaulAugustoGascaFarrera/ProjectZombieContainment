@@ -99,8 +99,8 @@ GameObject:
   - component: {fileID: 4036763416283581207}
   - component: {fileID: 1826843334534001078}
   - component: {fileID: 8012758384653142171}
-  - component: {fileID: 5875988767832106103}
-  - component: {fileID: 4964550962330202309}
+  - component: {fileID: 7343048278871960030}
+  - component: {fileID: -6796065870436853131}
   m_Layer: 7
   m_Name: BaseUnit
   m_TagString: Untagged
@@ -201,7 +201,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   faction: 0
---- !u!114 &5875988767832106103
+--- !u!114 &7343048278871960030
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -210,13 +210,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8307550519180195010}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8df72e09dffd1694f812fc6ec7d1c547, type: 3}
+  m_Script: {fileID: 11500000, guid: c16549610bfe4458aa9389201d072bb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 2
-  targetFaction: 0
-  timerMax: 0.2
---- !u!114 &4964550962330202309
+--- !u!114 &-6796065870436853131
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -225,6 +222,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8307550519180195010}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b8d4e6e890e39a439439de8c43fc255, type: 3}
+  m_Script: {fileID: 11500000, guid: ccc70e42821d8de4b90ffe3bbdba5d20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthAmount: 100
