@@ -13,15 +13,25 @@ partial struct SwordManSystem : ISystem
     {
         EntityCommandBuffer entityCommandBuffer = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
          
-        foreach((RefRW<LocalTransform> localTransform,RefRW<SwordMan> swordMan,Entity entity) in SystemAPI.Query<RefRW<LocalTransform>, RefRW<SwordMan>>().WithEntityAccess())
+        foreach((RefRW<LocalTransform> localTransform,RefRW<SwordMan> swordMan,RefRW<Target> target,Entity entity) in SystemAPI.Query<RefRW<LocalTransform>, RefRW<SwordMan>,RefRW<Target>>().WithEntityAccess())
         {
-            if (swordMan.ValueRO.targetEntity == Entity.Null)
+            if (target.ValueRO.targetEntity == Entity.Null)
             {
                 entityCommandBuffer.DestroyEntity(entity);
                 continue;
             }
 
-            LocalTransform targetLocalTransform = SystemAPI.GetComponent<LocalTransform>(swordMan.ValueRO.targetEntity);
+
+            //Unit unit = SystemAPI.GetComponent<Unit>(swordMan.ValueRO.targetEntity);
+
+
+            //if(target.ValueRO.targetFaction != unit.faction)
+            //{
+            //    UnityEngine.Debug.Log("No hay un Target zombie");
+            //    continue;
+            //}
+
+            LocalTransform targetLocalTransform = SystemAPI.GetComponent<LocalTransform>(target.ValueRO.targetEntity);
 
             float3 moveDirection = targetLocalTransform.Position - localTransform.ValueRO.Position;
 
@@ -35,7 +45,7 @@ partial struct SwordManSystem : ISystem
 
             if(math.distancesq(localTransform.ValueRO.Position,targetLocalTransform.Position) < distanceToDestroy)
             {
-                RefRW<Health> targetHealth = SystemAPI.GetComponentRW<Health>(swordMan.ValueRO.targetEntity);
+                RefRW<Health> targetHealth = SystemAPI.GetComponentRW<Health>(target.ValueRO.targetEntity);
 
                 swordMan.ValueRW.damageAmount = targetHealth.ValueRO.healthAmount;
 

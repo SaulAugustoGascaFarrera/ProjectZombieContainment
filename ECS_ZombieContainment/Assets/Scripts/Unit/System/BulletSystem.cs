@@ -13,17 +13,17 @@ partial struct BulletSystem : ISystem
 
         EntityCommandBuffer entityCommandBuffer = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
 
-        foreach((RefRW<LocalTransform> localTransform,RefRW<Bullet> bullet, Entity entity) in SystemAPI.Query<RefRW<LocalTransform>,RefRW<Bullet>>().WithEntityAccess())
+        foreach((RefRW<LocalTransform> localTransform,RefRW<Bullet> bullet,RefRW<Target> target,Entity entity) in SystemAPI.Query<RefRW<LocalTransform>,RefRW<Bullet>, RefRW<Target>>().WithEntityAccess())
         {
 
-            if(bullet.ValueRO.entityTarget == Entity.Null)
+            if (target.ValueRO.targetEntity == Entity.Null)
             {
                 entityCommandBuffer.DestroyEntity(entity);
                 continue;
             }
 
 
-            RefRO<LocalTransform> targetLocalTransfom = SystemAPI.GetComponentRO<LocalTransform>(bullet.ValueRO.entityTarget);
+            RefRO<LocalTransform> targetLocalTransfom = SystemAPI.GetComponentRO<LocalTransform>(target.ValueRO.targetEntity);
 
 
             float3 moveDirection = targetLocalTransfom.ValueRO.Position - localTransform.ValueRO.Position;
@@ -46,7 +46,7 @@ partial struct BulletSystem : ISystem
 
             if (math.distancesq(localTransform.ValueRO.Position,targetLocalTransfom.ValueRO.Position) < distanceToDestroy)
             {
-                RefRW<Health> targetHealth = SystemAPI.GetComponentRW<Health>(bullet.ValueRO.entityTarget);
+                RefRW<Health> targetHealth = SystemAPI.GetComponentRW<Health>(target.ValueRO.targetEntity);
 
                 targetHealth.ValueRW.healthAmount -= bullet.ValueRO.damageAmount;
 
