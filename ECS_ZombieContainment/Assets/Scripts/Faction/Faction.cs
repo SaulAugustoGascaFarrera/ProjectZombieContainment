@@ -3,5 +3,6 @@ using UnityEngine;
 public enum Faction
 {
     Friendly,
-    Zombie
+    Zombie,
+    Witch
 }

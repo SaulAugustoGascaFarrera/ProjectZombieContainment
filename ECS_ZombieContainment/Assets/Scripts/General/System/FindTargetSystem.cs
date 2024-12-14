@@ -3,76 +3,48 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Physics;
 using Unity.Transforms;
-using Unity.VisualScripting;
 using UnityEngine;
 
 partial struct FindTargetSystem : ISystem
 {
-   
-
+    
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        PhysicsWorldSingleton physicsWorldSingleton = SystemAPI.GetSingleton<PhysicsWorldSingleton>();
+        PhysicsWorldSingleton physicsWorld = SystemAPI.GetSingleton<PhysicsWorldSingleton>();
 
-        CollisionWorld collisionWorld = physicsWorldSingleton.CollisionWorld;
 
-        NativeList<DistanceHit> distanceHitsList = new NativeList<DistanceHit>(Allocator.Temp);
+        NativeList<DistanceHit> distanceHitList = new NativeList<DistanceHit>(Allocator.Temp);
 
-        //int unitCount = 0;
-        foreach ((RefRW<LocalTransform> localTransform,RefRW<FindTarget> findTarget,RefRW<Target> target) in SystemAPI.Query<RefRW<LocalTransform>,RefRW<FindTarget>,RefRW<Target>>())
+        foreach ((RefRW<LocalTransform> localTransform, RefRW<FindTarget> findTarget, RefRW<Target> target, RefRO<Unit> unit) in SystemAPI.Query<RefRW<LocalTransform>, RefRW<FindTarget>, RefRW<Target>, RefRO<Unit>>())
         {
 
-            findTarget.ValueRW.timer -= SystemAPI.Time.DeltaTime;
-
-            if(findTarget.ValueRO.timer > 0.0f)
+            if(unit.ValueRO.faction != Faction.Friendly)
             {
                 continue;
             }
 
-            findTarget.ValueRW.timer = findTarget.ValueRO.timerMax;
 
+            distanceHitList.Clear();
 
-            distanceHitsList.Clear();
-
-            CollisionFilter collisionFilter = new CollisionFilter
+            CollisionFilter filter = new CollisionFilter
             {
                 BelongsTo = ~0u,
-                CollidesWith = 1u << 7,
+                CollidesWith = 1u << 8,
                 GroupIndex = 0
             };
 
-            if(collisionWorld.OverlapSphere(localTransform.ValueRO.Position,findTarget.ValueRO.range,ref distanceHitsList,collisionFilter))
+            if (physicsWorld.OverlapSphere(localTransform.ValueRO.Position, findTarget.ValueRO.range, ref distanceHitList, filter))
             {
 
-                //Debug.Log(distanceHitsList.Length);
-
-
-                foreach (DistanceHit distanceHit in distanceHitsList)
+                foreach (DistanceHit distanceHit in distanceHitList)
                 {
-                   
 
-                    Unit unit = SystemAPI.GetComponent<Unit>(distanceHit.Entity);
-
-                    if (unit.faction == findTarget.ValueRO.targetFaction)
-                    {
-                        
-                        target.ValueRW.targetEntity = distanceHit.Entity;
-                    }
-
-                    
-
-                   
+                    target.ValueRW.targetEntity = distanceHit.Entity;
                 }
-
             }
-
         }
-
-      
-      
-
     }
 
-   
+    
 }

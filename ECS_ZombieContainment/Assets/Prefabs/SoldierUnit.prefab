@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3104527483589606386
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 504554893880565618}
+  m_Layer: 7
+  m_Name: SpawnBulletPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &504554893880565618
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3104527483589606386}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.253, y: 1.918, z: 2.002}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3190338433404091694}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5610436831760060470
 GameObject:
   m_ObjectHideFlags: 0
@@ -140,11 +171,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4246205264157136244, guid: 02dae6185150fb54d995c0a3e24cc6ed, type: 3}
       propertyPath: range
-      value: 5
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 4246205264157136244, guid: 02dae6185150fb54d995c0a3e24cc6ed, type: 3}
       propertyPath: targetFaction
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4551496416559623398, guid: 02dae6185150fb54d995c0a3e24cc6ed, type: 3}
+      propertyPath: rotationSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4958038516367883165, guid: 02dae6185150fb54d995c0a3e24cc6ed, type: 3}
+      propertyPath: targetGameObject
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5875988767832106103, guid: 02dae6185150fb54d995c0a3e24cc6ed, type: 3}
       propertyPath: range
@@ -158,12 +197,19 @@ PrefabInstance:
       propertyPath: m_Name
       value: SoldierUnit
       objectReference: {fileID: 0}
+    - target: {fileID: 9055741974613463523, guid: 02dae6185150fb54d995c0a3e24cc6ed, type: 3}
+      propertyPath: range
+      value: 15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 1131723664093613568, guid: 02dae6185150fb54d995c0a3e24cc6ed, type: 3}
       insertIndex: 0
       addedObject: {fileID: 6279419542734727103}
+    - targetCorrespondingSourceObject: {fileID: 1131723664093613568, guid: 02dae6185150fb54d995c0a3e24cc6ed, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 504554893880565618}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8307550519180195010, guid: 02dae6185150fb54d995c0a3e24cc6ed, type: 3}
       insertIndex: -1
@@ -173,7 +219,7 @@ PrefabInstance:
       addedObject: {fileID: 5280739020080480480}
     - targetCorrespondingSourceObject: {fileID: 8307550519180195010, guid: 02dae6185150fb54d995c0a3e24cc6ed, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5994007215635662431}
+      addedObject: {fileID: 6697967556595760032}
   m_SourcePrefab: {fileID: 100100000, guid: 02dae6185150fb54d995c0a3e24cc6ed, type: 3}
 --- !u!4 &3190338433404091694 stripped
 Transform:
@@ -211,7 +257,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42715120636695442a38f4cc54cd88d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5994007215635662431
+--- !u!114 &6697967556595760032
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -220,7 +266,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5816595067141310444}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7f4ef42a7e4c18489fc806680ec8177, type: 3}
+  m_Script: {fileID: 11500000, guid: 4b4b80d9dde1b944193ffd667dd6b6a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timerMax: 1
+  maxTimer: 0.2
+  damageAmount: 10
+  bulletSpawnTranform: {fileID: 504554893880565618}
+  attackDistance: 13

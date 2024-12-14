@@ -3,12 +3,9 @@ using UnityEngine;
 
 public class FindTargetAuthoring : MonoBehaviour
 {
-
-    public Faction targetFaction;
+    public float maxTimer;
     public float range;
 
-    [Header("Timers to update the find target system")]
-    public float timerMax;
     public class Baker : Baker<FindTargetAuthoring>
     {
         public override void Bake(FindTargetAuthoring authoring)
@@ -17,9 +14,8 @@ public class FindTargetAuthoring : MonoBehaviour
 
             AddComponent(entity, new FindTarget
             {
-                targetFaction = authoring.targetFaction,
-                range = authoring.range,
-                timerMax = authoring.timerMax
+                maxTimer = authoring.maxTimer,
+                range = authoring.range
             });
         }
     }
@@ -27,8 +23,7 @@ public class FindTargetAuthoring : MonoBehaviour
 
 public struct FindTarget : IComponentData
 {
-    public Faction targetFaction;
-    public float range;
     public float timer;
-    public float timerMax;
+    public float maxTimer;
+    public float range;
 }
