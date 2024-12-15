@@ -117,7 +117,7 @@ public class UnitSelectionManager : MonoBehaviour
                     Filter = new CollisionFilter
                     {
                         BelongsTo = ~0u,
-                        CollidesWith = 1u << GameAssets.UNIT_LAYER,
+                        CollidesWith = 1u << GameAssets.UNIT_LAYER | 1u << 9,
                         GroupIndex = 0,
 
                     }

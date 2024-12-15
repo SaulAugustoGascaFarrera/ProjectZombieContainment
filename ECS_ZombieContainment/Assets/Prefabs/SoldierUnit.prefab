@@ -125,6 +125,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 614447415140038269, guid: 02dae6185150fb54d995c0a3e24cc6ed, type: 3}
+      propertyPath: factionType
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1131723664093613568, guid: 02dae6185150fb54d995c0a3e24cc6ed, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

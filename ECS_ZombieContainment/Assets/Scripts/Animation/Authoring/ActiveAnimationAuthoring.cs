@@ -12,7 +12,7 @@ public class ActiveAnimationAuthoring : MonoBehaviour
     //public Mesh frame2;
     //public int frameMax;
     //public float frameTimerMax;
-    public AnimationDataSO unitIdle;
+    //public AnimationDataSO unitIdle;
     public class Baker : Baker<ActiveAnimationAuthoring>
     {
         public override void Bake(ActiveAnimationAuthoring authoring)
@@ -23,11 +23,11 @@ public class ActiveAnimationAuthoring : MonoBehaviour
 
             AddComponent(entity, new ActiveAnimation
             {
-                frame0 = entitiesGraphicsSystem.RegisterMesh(authoring.unitIdle.meshArray[0]),
-                frame1 = entitiesGraphicsSystem.RegisterMesh(authoring.unitIdle.meshArray[1]),
-                //frame2 = entitiesGraphicsSystem.RegisterMesh(authoring.unitIdle.meshArray[2]),
-                frameMax = authoring.unitIdle.meshArray.Length,
-                frameTimerMax = authoring.unitIdle.frameTimerMax
+                //frame0 = entitiesGraphicsSystem.RegisterMesh(authoring.unitIdle.meshArray[0]),
+                //frame1 = entitiesGraphicsSystem.RegisterMesh(authoring.unitIdle.meshArray[1]),
+                ////frame2 = entitiesGraphicsSystem.RegisterMesh(authoring.unitIdle.meshArray[2]),
+                //frameMax = authoring.unitIdle.meshArray.Length,
+                //frameTimerMax = authoring.unitIdle.frameTimerMax
 
             });
         }
@@ -37,10 +37,10 @@ public class ActiveAnimationAuthoring : MonoBehaviour
 public struct ActiveAnimation : IComponentData
 {
     public int frame;
-    public int frameMax;
     public float frameTimer;
-    public float frameTimerMax;
-    public BatchMeshID frame0;
-    public BatchMeshID frame1;
-    public BatchMeshID frame2;
+    //public BlobAssetReference<AnimationData> animationDataBlobAssetReference;
+    //public int activeAnimationIndex;
+    public AnimationDataSO.AnimationType activeAnimationType;
+   
+   
 }

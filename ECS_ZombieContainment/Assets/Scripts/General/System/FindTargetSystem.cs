@@ -19,10 +19,10 @@ partial struct FindTargetSystem : ISystem
         foreach ((RefRW<LocalTransform> localTransform, RefRW<FindTarget> findTarget, RefRW<Target> target, RefRO<Unit> unit) in SystemAPI.Query<RefRW<LocalTransform>, RefRW<FindTarget>, RefRW<Target>, RefRO<Unit>>())
         {
 
-            if(unit.ValueRO.faction != Faction.Friendly)
-            {
-                continue;
-            }
+            //if(unit.ValueRO.faction != FactionType.Friendly)
+            //{
+            //    continue;
+            //}
 
 
             distanceHitList.Clear();
@@ -30,7 +30,7 @@ partial struct FindTargetSystem : ISystem
             CollisionFilter filter = new CollisionFilter
             {
                 BelongsTo = ~0u,
-                CollidesWith = 1u << 8,
+                CollidesWith = 1u << 8 | 1u << 9,
                 GroupIndex = 0
             };
 
@@ -39,6 +39,13 @@ partial struct FindTargetSystem : ISystem
 
                 foreach (DistanceHit distanceHit in distanceHitList)
                 {
+
+                    if(!SystemAPI.Exists(distanceHit.Entity) || !SystemAPI.HasComponent<Faction>(distanceHit.Entity))
+                    {
+                        continue;
+                    }
+
+                    Faction faction = SystemAPI.GetComponent<Faction>(distanceHit.Entity);
 
                     target.ValueRW.targetEntity = distanceHit.Entity;
                 }
