@@ -11,25 +11,46 @@ partial struct UnitMoverSystem : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
+        UnitMoverJob unitMoverJob = new UnitMoverJob{
+            deltaTime = SystemAPI.Time.DeltaTime
+        };
 
-          
 
-        foreach((RefRW<LocalTransform> localTransform,RefRO<MoveSpeed> moveSpeed,RefRW<PhysicsVelocity> physicsVelocity) in SystemAPI.Query<RefRW<LocalTransform>,RefRO<MoveSpeed>, RefRW<PhysicsVelocity>>())
-        {
-            float3 targetPosition = MouseWorldPosition.Instance.GetPosition();
+        unitMoverJob.ScheduleParallel();
 
-            float3 moveDirection = targetPosition - localTransform.ValueRO.Position;
-
-            moveDirection = math.normalize(moveDirection);
-
-            localTransform.ValueRW.Rotation = math.slerp(localTransform.ValueRO.Rotation, quaternion.LookRotation(moveDirection, math.up()), moveSpeed.ValueRO.rotationSpeed * SystemAPI.Time.DeltaTime);
-
-            physicsVelocity.ValueRW.Linear = moveDirection * moveSpeed.ValueRO.movementSpeed;
-
-            physicsVelocity.ValueRW.Angular = float3.zero;
-
-            //localTransform.ValueRW.Position += moveDirection * moveSpeed.ValueRO.value * SystemAPI.Time.DeltaTime;
-        }
     }
 
+}
+
+
+[BurstCompile]
+public partial struct UnitMoverJob : IJobEntity
+{
+
+    public float deltaTime;
+    public void Execute(ref LocalTransform localTransform,in UnitMover unitMover,ref PhysicsVelocity physicsVelocity)
+    {
+        float3 moveDirection = unitMover.targetPosition - localTransform.Position;
+
+
+        float reachedTargetDistanceSq = 2.0f;
+
+        if(math.lengthsq(moveDirection) > reachedTargetDistanceSq)
+        {
+            moveDirection = math.normalize(moveDirection);
+
+            localTransform.Rotation = math.slerp(localTransform.Rotation, quaternion.LookRotation(moveDirection, math.up()), unitMover.rotationSpeed * deltaTime);
+
+            physicsVelocity.Linear = moveDirection * unitMover.movementSpeed;
+
+            physicsVelocity.Angular = float3.zero;
+        }
+        else
+        {
+            physicsVelocity.Linear = float3.zero;
+            physicsVelocity.Angular = float3.zero;
+        }
+
+        
+    }
 }
