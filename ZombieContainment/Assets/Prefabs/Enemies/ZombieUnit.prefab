@@ -8,13 +8,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 786818518048886660, guid: 3bb4cdef2cf7367409ffd0566421fe39, type: 3}
+      propertyPath: range
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 786818518048886660, guid: 3bb4cdef2cf7367409ffd0566421fe39, type: 3}
+      propertyPath: faction
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 786818518048886660, guid: 3bb4cdef2cf7367409ffd0566421fe39, type: 3}
+      propertyPath: targetFaction
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4714965444129964133, guid: 3bb4cdef2cf7367409ffd0566421fe39, type: 3}
       propertyPath: m_Name
       value: ZombieUnit
       objectReference: {fileID: 0}
     - target: {fileID: 4714965444129964133, guid: 3bb4cdef2cf7367409ffd0566421fe39, type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6400402816146761493, guid: 3bb4cdef2cf7367409ffd0566421fe39, type: 3}
       propertyPath: m_Mesh
