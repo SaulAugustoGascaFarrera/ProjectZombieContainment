@@ -55,7 +55,7 @@ partial struct HealthBarSystem : ISystem
             //barVisualLocalTransform.ValueRW.Scale = healthNormalized / 2;
 
             RefRW<PostTransformMatrix> barVisualPostTransformMatrix = SystemAPI.GetComponentRW<PostTransformMatrix>(healthBar.ValueRO.barVisualEntity);
-            barVisualPostTransformMatrix.ValueRW.Value = float4x4.Scale(healthNormalized / 2, 1, 1);
+            barVisualPostTransformMatrix.ValueRW.Value = float4x4.Scale(healthNormalized, 1, 1);
         }
     }
 
