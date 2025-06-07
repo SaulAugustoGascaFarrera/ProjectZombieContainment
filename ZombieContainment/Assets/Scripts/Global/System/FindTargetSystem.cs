@@ -1,6 +1,7 @@
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Mathematics;
 using Unity.Physics;
 using Unity.Transforms;
 
@@ -16,7 +17,7 @@ partial struct FindTargetSystem : ISystem
 
         NativeList<DistanceHit> distanceHitList = new NativeList<DistanceHit>(Allocator.Temp);
 
-        foreach((RefRO<LocalTransform> LocalTransform,RefRW<FindTarget> findTarget,RefRW<Target> target) in SystemAPI.Query<RefRO<LocalTransform>, RefRW<FindTarget>,RefRW<Target>>())
+        foreach((RefRO<LocalTransform> localTransform,RefRW<FindTarget> findTarget,RefRW<Target> target,RefRO<TargetOverride> targetOverride) in SystemAPI.Query<RefRO<LocalTransform>, RefRW<FindTarget>,RefRW<Target>,RefRO<TargetOverride>>())
         {
 
             findTarget.ValueRW.timer -= SystemAPI.Time.DeltaTime;
@@ -29,6 +30,14 @@ partial struct FindTargetSystem : ISystem
 
             findTarget.ValueRW.timer = findTarget.ValueRO.timerMax;
 
+
+            if(targetOverride.ValueRO.targetEntity != Entity.Null)
+            {
+                target.ValueRW.targetEntity = targetOverride.ValueRO.targetEntity;
+                continue;
+            }
+
+
             distanceHitList.Clear();
 
             CollisionFilter collisionFilter = new CollisionFilter
@@ -38,7 +47,25 @@ partial struct FindTargetSystem : ISystem
                 GroupIndex = 0
             };
 
-            if(collisionWorld.OverlapSphere(LocalTransform.ValueRO.Position, findTarget.ValueRO.range,ref distanceHitList,collisionFilter))
+            Entity closestTargetEntity = Entity.Null;
+
+            float closestTargetDistance= float.MaxValue;
+
+            float currentTaregtDistanceOffset = 0.0f; 
+
+            if(target.ValueRO.targetEntity != Entity.Null)
+            {
+                closestTargetEntity = target.ValueRO.targetEntity;
+
+                LocalTransform targetLocalTransform = SystemAPI.GetComponent<LocalTransform>(target.ValueRO.targetEntity);
+
+                closestTargetDistance = math.distance(localTransform.ValueRO.Position, targetLocalTransform.Position);
+
+                currentTaregtDistanceOffset = 2f;
+            }
+
+
+            if(collisionWorld.OverlapSphere(localTransform.ValueRO.Position, findTarget.ValueRO.range,ref distanceHitList,collisionFilter))
             {
                 foreach(DistanceHit distanceHit in distanceHitList)
                 {
@@ -53,11 +80,32 @@ partial struct FindTargetSystem : ISystem
                     if(targetUnit.faction == findTarget.ValueRO.targetFaction)
                     {
                         //valid target
-                        target.ValueRW.targetEntity = distanceHit.Entity;
-                        break;
+                        if(closestTargetEntity == Entity.Null )
+                        {
+                           
+                            closestTargetEntity = distanceHit.Entity;
+                            closestTargetDistance = distanceHit.Distance;
+                        }
+                        else
+                        {
+                            if(distanceHit.Distance + currentTaregtDistanceOffset < closestTargetDistance)
+                            {
+                                closestTargetEntity = distanceHit.Entity;
+                                closestTargetDistance = distanceHit.Distance;
+                            }
+                        }
+
+                       
+
                     }
                 }
             }
+
+            if(closestTargetEntity != Entity.Null)
+            {
+                target.ValueRW.targetEntity = closestTargetEntity;
+            }
+           
 
         }
     }
