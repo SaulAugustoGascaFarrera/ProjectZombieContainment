@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum Faction
+public enum FactionType
 {
    Friendly,
    Zombie

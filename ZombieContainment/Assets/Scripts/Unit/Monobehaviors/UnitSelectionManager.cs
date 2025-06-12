@@ -158,7 +158,7 @@ public class UnitSelectionManager : MonoBehaviour
                 Filter = new CollisionFilter
                 {
                      BelongsTo = ~0u,
-                     CollidesWith = 1u << GameAssets.UNIT_LAYERS,
+                     CollidesWith = 1u << GameAssets.UNIT_LAYERS | 1u << GameAssets.BUILDING_LAYERS,
                      GroupIndex = 0
                 }
             };
@@ -167,11 +167,12 @@ public class UnitSelectionManager : MonoBehaviour
 
             if(collisionWorld.CastRay(raycastInput,out Unity.Physics.RaycastHit raycastHit))
             {
-                if(entityManager.HasComponent<Unit>(raycastHit.Entity))
+                if(entityManager.HasComponent<Faction>(raycastHit.Entity))
                 {
-                    Unit unit = entityManager.GetComponentData<Unit>(raycastHit.Entity);
+                    //Hit something with faction component
+                    Faction faction = entityManager.GetComponentData<Faction>(raycastHit.Entity);
 
-                    if(unit.faction == Faction.Zombie)
+                    if(faction.factionType == FactionType.Zombie)
                     {
                         isAttackingSingleTarget = true;
 

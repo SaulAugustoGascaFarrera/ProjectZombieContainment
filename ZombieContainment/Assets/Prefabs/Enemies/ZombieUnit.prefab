@@ -59,6 +59,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 5032289863150854617, guid: 3bb4cdef2cf7367409ffd0566421fe39, type: 3}
+      propertyPath: factionType
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6400402816146761493, guid: 3bb4cdef2cf7367409ffd0566421fe39, type: 3}
       propertyPath: m_Mesh
       value: 
